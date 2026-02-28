@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shardul Lote | Full Stack Developer</title>
+<meta name="description" content="Shardul Lote - Full Stack Java Developer Portfolio Spring Boot MongoDB REST API AI">
+<title>Shardul Lote | Java Developer Portfolio</title>
+
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=general-sans@400,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-
 :root{
 --bg:#0B0B0B;
 --text:#FFFFFF;
@@ -37,8 +38,8 @@ padding:0 32px;
 nav{
 position:fixed;
 width:100%;
-background:rgba(11,11,11,0.7);
-backdrop-filter:blur(10px);
+background:rgba(11,11,11,0.6);
+backdrop-filter:blur(12px);
 padding:20px 0;
 z-index:1000;
 }
@@ -48,8 +49,6 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 }
-
-.logo{font-weight:700}
 
 nav a{
 margin-left:24px;
@@ -63,9 +62,8 @@ section{padding:128px 0}
 
 h1{
 font-family:'Satoshi';
-font-size:3.8rem;
+font-size:4rem;
 line-height:1;
-margin-bottom:24px;
 }
 
 h2{
@@ -74,7 +72,7 @@ font-size:2.4rem;
 margin-bottom:40px;
 }
 
-p{color:var(--secondary);margin-bottom:16px}
+p{color:var(--secondary);margin-top:16px}
 
 .hero{
 height:100vh;
@@ -82,7 +80,10 @@ display:flex;
 align-items:center;
 }
 
-.subtitle{font-size:1.5rem}
+.typing{
+color:var(--brand);
+font-weight:700;
+}
 
 .buttons{margin-top:32px;display:flex;gap:16px}
 
@@ -97,12 +98,11 @@ transition:.3s;
 .primary{
 background:var(--brand);
 color:white;
-box-shadow:0 0 30px rgba(37,99,235,0.4);
+box-shadow:0 0 40px rgba(37,99,235,0.5);
 }
 
 .primary:hover{
 background:var(--accent);
-box-shadow:0 0 40px rgba(34,197,94,0.6);
 }
 
 .secondary{
@@ -120,8 +120,8 @@ gap:32px;
 border:1px solid #2a2a2a;
 padding:32px;
 border-radius:18px;
-transition:.4s;
 background:rgba(255,255,255,0.02);
+transition:.4s;
 }
 
 .card:hover{
@@ -135,8 +135,6 @@ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:32px;
 }
 
-.about{max-width:750px}
-
 .timeline{
 border-left:2px solid var(--brand);
 padding-left:32px;
@@ -149,16 +147,6 @@ background:var(--brand);
 text-align:center;
 padding:100px 32px;
 border-radius:24px;
-}
-
-.icons i{
-font-size:26px;
-margin-right:18px;
-transition:.3s;
-}
-
-.icons i:hover{
-color:var(--accent);
 }
 
 .footer{
@@ -176,6 +164,27 @@ transition:1s;
 .reveal.active{
 opacity:1;
 transform:translateY(0);
+}
+
+.hero-bg{
+position:absolute;
+width:500px;
+height:500px;
+background:var(--brand);
+filter:blur(150px);
+opacity:0.3;
+right:10%;
+top:20%;
+}
+
+@media(max-width:768px){
+
+h1{font-size:2.5rem}
+
+section{padding:80px 0}
+
+.buttons{flex-direction:column}
+
 }
 
 </style>
@@ -198,15 +207,32 @@ el.classList.add('active');
 
 })
 
+let i=0;
+let text="Spring Boot Developer";
+
+function typing(){
+
+if(i<text.length){
+document.getElementById("typing").innerHTML+=text.charAt(i);
+i++;
+setTimeout(typing,80);
+}
+
+}
+
+window.onload=typing;
+
 </script>
 
 </head>
 
 <body>
 
+<div class="hero-bg"></div>
+
 <nav>
 <div class="container nav-inner">
-<div class="logo">Shardul Lote</div>
+<div><b>Shardul Lote</b></div>
 <div>
 <a href="#projects">Projects</a>
 <a href="#skills">Skills</a>
@@ -220,9 +246,15 @@ el.classList.add('active');
 
 <section class="hero">
 <div>
-<h1>Full Stack Java Developer</h1>
-<p class="subtitle">Building Production Ready Backend & AI Systems</p>
-<p>Spring Boot • MongoDB • REST APIs • Generative AI</p>
+<h1>
+Full Stack Java Developer
+</h1>
+
+<h2 class="typing" id="typing"></h2>
+
+<p>
+Spring Boot • MongoDB • REST APIs • AI
+</p>
 
 <div class="buttons">
 <a href="#projects" class="btn primary">View Projects</a>
@@ -231,7 +263,7 @@ el.classList.add('active');
 
 <br><br>
 
-<div class="icons">
+<div>
 <i class="fab fa-github"></i>
 <i class="fab fa-linkedin"></i>
 <i class="fas fa-envelope"></i>
@@ -247,20 +279,21 @@ el.classList.add('active');
 
 <div class="card">
 <h3>Dynamic Reminder Scheduler</h3>
-<p>Dynamic cron scheduler with MongoDB persistence.</p>
+<p>Spring Boot scheduler with MongoDB persistence.</p>
 </div>
 
 <div class="card">
 <h3>AI RAG System</h3>
-<p>Retrieval augmented generation using embeddings.</p>
+<p>Retrieval augmented generation with embeddings.</p>
 </div>
 
 <div class="card">
 <h3>Subscription Platform</h3>
-<p>Enterprise Spring Boot backend platform.</p>
+<p>Enterprise multi-module Spring Boot backend.</p>
 </div>
 
 </div>
+
 </section>
 
 <section id="skills" class="reveal">
@@ -303,17 +336,13 @@ el.classList.add('active');
 <section id="about" class="reveal">
 <h2>About Me</h2>
 
-<div class="about">
 <p>
-Full Stack Java Developer specializing in scalable backend systems.
-I design production-ready applications including schedulers and AI systems.
+Full Stack Java Developer building scalable backend systems and AI-powered applications.
 </p>
 
 <p>
-I also teach Artificial Intelligence and Machine Learning.
+Experienced in Spring Boot, MongoDB, REST APIs and Generative AI.
 </p>
-
-</div>
 
 </section>
 
@@ -325,7 +354,7 @@ I also teach Artificial Intelligence and Machine Learning.
 <div class="timeline-item">
 <h3>Software Engineer Intern</h3>
 <p>Kala and Kriti</p>
-<p>Developed scalable backend services using Spring Boot.</p>
+<p>Developed production backend systems using Spring Boot.</p>
 </div>
 
 </div>
