@@ -27,6 +27,17 @@ font-family:'General Sans',sans-serif;
 background:var(--bg);
 color:var(--text);
 line-height:1.5;
+/* opacity:0;
+transition:opacity 1s ease; */
+}
+
+/* body.loaded{
+opacity:1;
+} */
+
+img{
+max-width:100%;
+height:auto;
 }
 
 .container{
@@ -323,6 +334,12 @@ padding:20px 0;
 z-index:1000;
 }
 
+/* nav.scrolled{
+background:rgba(11,11,11,0.95);
+padding:14px 0;
+transition:0.4s;
+} */
+
 .nav-inner{
 display:flex;
 justify-content:space-between;
@@ -351,6 +368,22 @@ font-size:2.4rem;
 margin-bottom:40px;
 }
 
+.typing::after{
+
+content:"|";
+margin-left:6px;
+animation:blink 1s infinite;
+
+}
+
+@keyframes blink{
+
+0%{opacity:1}
+50%{opacity:0}
+100%{opacity:1}
+
+}
+
 p{color:var(--secondary);margin-top:16px}
 
 .hero{
@@ -372,6 +405,11 @@ border-radius:10px;
 text-decoration:none;
 font-weight:500;
 transition:.3s;
+transform:translateY(0);
+}
+
+.btn:hover{
+transform:translateY(-4px);
 }
 
 .primary{
@@ -392,16 +430,13 @@ color:white;
 }
 
 .icons-to-redirect{
-
-margin-top:32px;
+margin-top:16px;
 display:flex;
 gap:24px;
 align-items:center;
-
 }
 
 .icons-to-redirect a{
-
 color:white;
 font-size:26px;
 transition:0.3s;
@@ -412,16 +447,12 @@ justify-content:center;
 text-decoration: none;
 width:44px;
 height:44px;
-
 border-radius:8px;
-
 }
 
 .icons-to-redirect a:hover{
-
 color:var(--accent);
 transform:translateY(-3px);
-
 }
 
 .projects-grid{
@@ -439,14 +470,20 @@ transition:.4s;
 }
 
 .card:hover{
-transform:translateY(-10px);
+transform:translateY(-12px);
 border:1px solid var(--brand);
+box-shadow:0 20px 40px rgba(0,0,0,0.5);
 }
 
 .skills{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+transition:0.3s;
 gap:32px;
+}
+
+.skills div:hover{
+transform:translateY(-6px);
 }
 
 .timeline{
@@ -459,25 +496,25 @@ padding-left:32px;
 .contact{
 background:var(--brand);
 text-align:center;
-padding:100px 32px;
+padding:100px 20px;
 border-radius:24px;
 }
 
 .footer{
 text-align:center;
-padding:40px;
+padding:20px;
 color:#888787
 }
 
 .reveal{
 opacity:0;
-transform:translateY(40px);
-transition:1s;
+transform:translateY(60px) scale(0.98);
+transition:1s cubic-bezier(.2,.8,.2,1);
 }
 
 .reveal.active{
 opacity:1;
-transform:translateY(0);
+transform:translateY(0) scale(1);
 }
 
 .hero-bg{
@@ -485,10 +522,17 @@ position:absolute;
 width:500px;
 height:500px;
 background:var(--brand);
-filter:blur(150px);
-opacity:0.3;
+filter:blur(160px);
+opacity:0.35;
 right:10%;
 top:20%;
+animation:float 8s ease-in-out infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0px)}
+50%{transform:translateY(-40px)}
+100%{transform:translateY(0px)}
 }
 
 @media(max-width:768px){
@@ -522,6 +566,42 @@ loader.style.display="none";
 },800);
 
 },1500);
+
+});
+
+window.addEventListener("scroll",function(){
+
+let nav=document.querySelector("nav");
+
+if(window.scrollY>50){
+
+nav.classList.add("scrolled");
+
+}else{
+
+nav.classList.remove("scrolled");
+
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+
+setTimeout(function(){
+
+const loader=document.getElementById("loading-screen");
+
+loader.classList.add("fade-out");
+
+document.body.classList.add("loaded");
+
+setTimeout(function(){
+
+loader.style.display="none";
+
+},800);
+
+},1200);
+
+});
 
 });
 
@@ -604,7 +684,7 @@ Java Developer
 <h2 class="typing" id="typing"></h2>
 
 <p>
-Spring Boot • MySQL • REST APIs • Gen AI
+Spring Boot • Microservices • MongoDB • AI Systems
 </p>
 
 <div class="buttons">
@@ -715,7 +795,7 @@ Experienced in Spring Boot, MongoDB, REST APIs and Generative AI.
 <h2>Let's Work Together</h2>
 <p>Available for Software Developer roles</p>
 <br>
-<a href="ShardulLote_resume.pdf" class="btn secondary" download>
+<a href="ShardulLote_resume.pdf" class="btn primary" download>
 Download Resume
 </a>
 </div>
