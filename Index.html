@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shardul Lote | Full Stack Java Developer</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=general-sans@400,500&display=swap" rel="stylesheet">
+<style>
+
+:root{
+--bg:#0B0B0B;
+--text:#FFFFFF;
+--secondary:#E5E5E5;
+--brand:#2563EB;
+--accent:#22C55E;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'General Sans',sans-serif;
+background:var(--bg);
+color:var(--text);
+line-height:1.5;
+font-size:1rem;
+}
+
+h1{
+font-family:'Satoshi',sans-serif;
+font-size:3.5rem;
+line-height:1;
+letter-spacing:-1px;
+margin-bottom:24px;
+}
+
+h2{
+font-family:'Satoshi',sans-serif;
+font-size:2.2rem;
+line-height:1.1;
+letter-spacing:-0.5px;
+margin-bottom:24px;
+}
+
+p{
+color:var(--secondary);
+margin-bottom:16px;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:0 32px;
+}
+
+nav{
+padding:24px 0;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-weight:700;
+font-size:1.2rem;
+}
+
+.hero{
+height:100vh;
+display:flex;
+align-items:center;
+}
+
+.hero-content{
+max-width:700px;
+}
+
+.subtitle{
+font-size:1.5rem;
+margin-bottom:24px;
+}
+
+.buttons{
+display:flex;
+gap:16px;
+margin-top:32px;
+}
+
+.btn{
+padding:16px 32px;
+border-radius:8px;
+text-decoration:none;
+font-weight:500;
+}
+
+.primary{
+background:var(--brand);
+color:white;
+}
+
+.primary:hover{
+background:var(--accent);
+}
+
+.secondary{
+border:1px solid var(--secondary);
+color:var(--text);
+}
+
+section{
+padding:128px 0;
+}
+
+.projects-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:32px;
+}
+
+.card{
+border:1px solid #333;
+padding:24px;
+border-radius:16px;
+}
+
+.card h3{
+margin-bottom:16px;
+}
+
+.skills{
+display:flex;
+gap:48px;
+flex-wrap:wrap;
+}
+
+.contact{
+background:var(--brand);
+text-align:center;
+padding:96px 32px;
+border-radius:24px;
+}
+
+.contact h2{
+color:white;
+}
+
+.footer{
+text-align:center;
+padding:32px;
+color:gray;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<nav>
+<div class="logo">Shardul</div>
+<div>
+Projects Skills Contact
+</div>
+</nav>
+
+<section class="hero">
+<div class="hero-content">
+<h1>Full Stack Java Developer</h1>
+<p class="subtitle">Building Scalable Backend Systems</p>
+<p>Spring Boot • MongoDB • REST APIs • AI</p>
+
+<div class="buttons">
+<a href="#projects" class="btn primary">View Projects</a>
+<a href="#contact" class="btn secondary">Contact Me</a>
+</div>
+
+</div>
+</section>
+
+<section id="projects">
+<h2>Featured Projects</h2>
+
+<div class="projects-grid">
+
+<div class="card">
+<h3>Dynamic Reminder Scheduler</h3>
+<p>Spring Boot scheduler with MongoDB and cron jobs.</p>
+</div>
+
+<div class="card">
+<h3>AI RAG System</h3>
+<p>Retrieval Augmented Generation using MongoDB Atlas.</p>
+</div>
+
+<div class="card">
+<h3>Subscription Service</h3>
+<p>Backend service for subscription management.</p>
+</div>
+
+</div>
+</section>
+
+<section>
+<h2>Skills</h2>
+
+<div class="skills">
+
+<div>
+<h3>Backend</h3>
+<p>Java</p>
+<p>Spring Boot</p>
+<p>REST APIs</p>
+</div>
+
+<div>
+<h3>Database</h3>
+<p>MongoDB</p>
+<p>MySQL</p>
+</div>
+
+<div>
+<h3>AI</h3>
+<p>Python</p>
+<p>Machine Learning</p>
+<p>GenAI</p>
+</div>
+
+</div>
+</section>
+
+<section id="contact">
+
+<div class="contact">
+<h2>Let's Work Together</h2>
+<p>Email: your@email.com</p>
+<br>
+<a class="btn secondary" href="#">Contact Me</a>
+</div>
+
+</section>
+
+<div class="footer">
+© 2026 Shardul Lote
+</div>
+
+</div>
+
+</body>
+</html>
