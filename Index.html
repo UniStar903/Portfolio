@@ -12,12 +12,14 @@
 :root{
 --bg:#0B0B0B;
 --text:#FFFFFF;
---secondary:#E5E5E5;
+--secondary:#BFBFBF;
 --brand:#2563EB;
 --accent:#22C55E;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
+
+html{scroll-behavior:smooth}
 
 body{
 font-family:'General Sans',sans-serif;
@@ -35,9 +37,9 @@ padding:0 32px;
 nav{
 position:fixed;
 width:100%;
-top:0;
-background:rgba(11,11,11,0.9);
-padding:24px 0;
+background:rgba(11,11,11,0.7);
+backdrop-filter:blur(10px);
+padding:20px 0;
 z-index:1000;
 }
 
@@ -57,24 +59,22 @@ color:var(--secondary);
 
 nav a:hover{color:white}
 
+section{padding:128px 0}
+
 h1{
 font-family:'Satoshi';
-font-size:3.5rem;
+font-size:3.8rem;
 line-height:1;
 margin-bottom:24px;
 }
 
 h2{
 font-family:'Satoshi';
-font-size:2.2rem;
-margin-bottom:32px;
+font-size:2.4rem;
+margin-bottom:40px;
 }
 
-h3{margin-bottom:16px}
-
 p{color:var(--secondary);margin-bottom:16px}
-
-section{padding:128px 0}
 
 .hero{
 height:100vh;
@@ -82,78 +82,124 @@ display:flex;
 align-items:center;
 }
 
-.subtitle{font-size:1.4rem}
+.subtitle{font-size:1.5rem}
 
 .buttons{margin-top:32px;display:flex;gap:16px}
 
 .btn{
 padding:16px 32px;
-border-radius:8px;
+border-radius:10px;
 text-decoration:none;
 font-weight:500;
 transition:.3s;
 }
 
-.primary{background:var(--brand);color:white}
-.primary:hover{background:var(--accent)}
+.primary{
+background:var(--brand);
+color:white;
+box-shadow:0 0 30px rgba(37,99,235,0.4);
+}
 
-.secondary{border:1px solid var(--secondary);color:white}
+.primary:hover{
+background:var(--accent);
+box-shadow:0 0 40px rgba(34,197,94,0.6);
+}
+
+.secondary{
+border:1px solid var(--secondary);
+color:white;
+}
 
 .projects-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
 gap:32px;
 }
 
 .card{
-border:1px solid #333;
-padding:24px;
-border-radius:16px;
-transition:.3s;
+border:1px solid #2a2a2a;
+padding:32px;
+border-radius:18px;
+transition:.4s;
+background:rgba(255,255,255,0.02);
 }
 
 .card:hover{
-transform:translateY(-6px);
+transform:translateY(-10px);
 border:1px solid var(--brand);
 }
 
 .skills{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:32px;
 }
 
-.about{
-max-width:800px;
-}
+.about{max-width:750px}
 
 .timeline{
 border-left:2px solid var(--brand);
-padding-left:24px;
+padding-left:32px;
 }
 
-.timeline-item{margin-bottom:32px}
+.timeline-item{margin-bottom:40px}
 
 .contact{
 background:var(--brand);
 text-align:center;
-padding:96px 32px;
+padding:100px 32px;
 border-radius:24px;
+}
+
+.icons i{
+font-size:26px;
+margin-right:18px;
+transition:.3s;
+}
+
+.icons i:hover{
+color:var(--accent);
 }
 
 .footer{
 text-align:center;
-padding:32px;
-color:gray;
+padding:40px;
+color:#777
 }
 
-.icons i{
-font-size:24px;
-margin-right:16px;
-color:white;
+.reveal{
+opacity:0;
+transform:translateY(40px);
+transition:1s;
+}
+
+.reveal.active{
+opacity:1;
+transform:translateY(0);
 }
 
 </style>
+
+<script>
+
+window.addEventListener('scroll',()=>{
+
+let reveals=document.querySelectorAll('.reveal');
+
+reveals.forEach(el=>{
+
+let top=el.getBoundingClientRect().top;
+
+if(top<window.innerHeight-100){
+el.classList.add('active');
+}
+
+})
+
+})
+
+</script>
+
 </head>
 
 <body>
@@ -175,8 +221,8 @@ color:white;
 <section class="hero">
 <div>
 <h1>Full Stack Java Developer</h1>
-<p class="subtitle">Building Scalable Backend & AI Systems</p>
-<p>Spring Boot • MongoDB • REST APIs • GenAI</p>
+<p class="subtitle">Building Production Ready Backend & AI Systems</p>
+<p>Spring Boot • MongoDB • REST APIs • Generative AI</p>
 
 <div class="buttons">
 <a href="#projects" class="btn primary">View Projects</a>
@@ -194,30 +240,30 @@ color:white;
 </div>
 </section>
 
-<section id="projects">
+<section id="projects" class="reveal">
 <h2>Featured Projects</h2>
 
 <div class="projects-grid">
 
 <div class="card">
 <h3>Dynamic Reminder Scheduler</h3>
-<p>Dynamic cron scheduler using Spring Boot and MongoDB.</p>
+<p>Dynamic cron scheduler with MongoDB persistence.</p>
 </div>
 
 <div class="card">
 <h3>AI RAG System</h3>
-<p>GenAI Retrieval system with MongoDB Atlas embeddings.</p>
+<p>Retrieval augmented generation using embeddings.</p>
 </div>
 
 <div class="card">
 <h3>Subscription Platform</h3>
-<p>Multi-module Spring Boot subscription system.</p>
+<p>Enterprise Spring Boot backend platform.</p>
 </div>
 
 </div>
 </section>
 
-<section id="skills">
+<section id="skills" class="reveal">
 <h2>Skills</h2>
 
 <div class="skills">
@@ -240,7 +286,7 @@ color:white;
 <h3>AI</h3>
 <p>Python</p>
 <p>Machine Learning</p>
-<p>GenAI</p>
+<p>Generative AI</p>
 </div>
 
 <div>
@@ -251,26 +297,27 @@ color:white;
 </div>
 
 </div>
+
 </section>
 
-<section id="about">
+<section id="about" class="reveal">
 <h2>About Me</h2>
 
 <div class="about">
 <p>
-Full Stack Java Developer specializing in Spring Boot and scalable backend systems.
-I build production-ready applications including schedulers and AI-powered solutions.
+Full Stack Java Developer specializing in scalable backend systems.
+I design production-ready applications including schedulers and AI systems.
 </p>
 
 <p>
-I also teach Artificial Intelligence, Machine Learning and Python to students.
+I also teach Artificial Intelligence and Machine Learning.
 </p>
 
 </div>
 
 </section>
 
-<section>
+<section class="reveal">
 <h2>Experience</h2>
 
 <div class="timeline">
@@ -278,14 +325,14 @@ I also teach Artificial Intelligence, Machine Learning and Python to students.
 <div class="timeline-item">
 <h3>Software Engineer Intern</h3>
 <p>Kala and Kriti</p>
-<p>Built backend systems using Spring Boot and MongoDB.</p>
+<p>Developed scalable backend services using Spring Boot.</p>
 </div>
 
 </div>
 
 </section>
 
-<section id="contact">
+<section id="contact" class="reveal">
 
 <div class="contact">
 <h2>Let's Work Together</h2>
