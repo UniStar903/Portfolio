@@ -461,6 +461,40 @@ grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
 gap:32px;
 }
 
+.repo-meta{
+display:flex;
+gap:10px;
+margin:10px 0;
+align-items:center;
+}
+
+.badge{
+background:#0f3460;
+padding:4px 10px;
+border-radius:6px;
+font-size:12px;
+color:white;
+}
+
+.updated{
+font-size:12px;
+color:#aaa;
+margin-bottom:10px;
+}
+
+.repo-buttons{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.readme-preview{
+font-size:13px;
+color:#bbb;
+margin-top:14px;
+line-height:1.4;
+}
+
 .card{
 border:1px solid #2a2a2a;
 padding:32px;
@@ -503,7 +537,9 @@ border-radius:24px;
 .footer{
 text-align:center;
 padding:20px;
-color:#888787
+color:#888787;
+font-size:14px;
+line-height:1.8;
 }
 
 .reveal{
@@ -529,6 +565,105 @@ top:20%;
 animation:float 8s ease-in-out infinite;
 }
 
+/* CHATBOT */
+
+#chatbot-toggle{
+position:fixed;
+bottom:30px;
+right:30px;
+width:60px;
+height:60px;
+border-radius:50%;
+background:#0f3460;
+color:white;
+font-size:24px;
+border:none;
+cursor:pointer;
+z-index:1000;
+}
+
+#chat-window{
+position:fixed;
+bottom:100px;
+right:30px;
+width:320px;
+height:420px;
+background:#1a1a2e;
+border-radius:12px;
+display:none;
+flex-direction:column;
+overflow:hidden;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
+z-index:1000;
+}
+
+.chat-header{
+padding:12px;
+background:#0f3460;
+color:white;
+font-weight:bold;
+}
+
+#chat-messages{
+flex:1;
+padding:10px;
+overflow-y:auto;
+font-size:14px;
+}
+
+.chat-input{
+display:flex;
+border-top:1px solid #333;
+}
+
+#chat-input{
+flex:1;
+padding:10px;
+border:none;
+outline:none;
+background:#16213e;
+color:white;
+}
+
+#send-btn{
+background:#0f3460;
+border:none;
+color:white;
+padding:10px 14px;
+cursor:pointer;
+}
+
+/* AI typing indicator */
+
+.typing{
+display:flex;
+gap:4px;
+align-items:center;
+margin-bottom:10px;
+}
+
+.typing span{
+width:6px;
+height:6px;
+background:#aaa;
+border-radius:50%;
+animation:blink 1.4s infinite;
+}
+
+.typing span:nth-child(2){
+animation-delay:0.2s;
+}
+
+.typing span:nth-child(3){
+animation-delay:0.4s;
+}
+
+@keyframes blink{
+0%{opacity:0.2}
+20%{opacity:1}
+100%{opacity:0.2}
+}
+
 @keyframes float{
 0%{transform:translateY(0px)}
 50%{transform:translateY(-40px)}
@@ -549,90 +684,181 @@ section{padding:80px 0}
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function() {
+const API_BASE = "https://portfolio-backend-5tl4.onrender.com";
 
-setTimeout(function(){
+/* ------------------------------
+   BACKEND STATUS + LOADER
+--------------------------------*/
 
-const loader = document.getElementById("loading-screen");
+async function checkBackend(){
 
-loader.classList.add("fade-out");
+    try{
 
-document.body.classList.add("loaded");
+        const response = await fetch(API_BASE + "/api/status");
 
-setTimeout(function(){
+        if(response.ok){
 
-loader.style.display="none";
+            const loader = document.getElementById("loading-screen");
 
-},800);
+            loader.classList.add("fade-out");
+            document.body.classList.add("loaded");
 
-},1500);
+            setTimeout(()=>{
+                loader.style.display="none";
+            },800);
 
-});
+            loadProjects(); // load GitHub projects
+
+        }
+
+    }catch(e){
+
+        console.log("Backend waking up...");
+        setTimeout(checkBackend,2000);
+
+    }
+}
+
+/* ------------------------------
+   LOAD PROJECTS FROM BACKEND
+--------------------------------*/
+
+async function loadProjects(){
+
+    try{
+
+        const res = await fetch(API_BASE + "/api/projects");
+
+        const projects = await res.json();
+
+        const container = document.getElementById("projects-container");
+
+        if(!container) return;
+
+        container.innerHTML="";
+
+        projects.forEach(repo => {
+
+            const updated = new Date(repo.updated_at).toLocaleDateString();
+
+            const card = document.createElement("div");
+
+            card.className="card reveal";
+
+            card.innerHTML = `
+                <h3>${repo.name}</h3>
+
+                <p>${repo.description || "No description available"}</p>
+
+                <div class="repo-meta">
+
+                    ${repo.language ? `<span class="badge">${repo.language}</span>` : ""}
+
+                    ${repo.stargazers_count > 0 ? `<span>⭐ ${repo.stargazers_count}</span>` : ""}
+
+                </div>
+
+                <p class="updated">
+                Updated: ${updated}
+                </p>
+
+                <div class="repo-buttons">
+
+                    <a href="${repo.html_url}" target="_blank" class="btn secondary">
+                    GitHub
+                    </a>
+
+                    ${repo.pagesLive ? 
+                    `<a href="${repo.githubPagesUrl}" target="_blank" class="btn primary">
+                    Live Demo
+                    </a>` 
+                    : ""}
+
+                </div>
+
+                ${repo.readmePreview ? 
+                `<p class="readme-preview">${repo.readmePreview}</p>` 
+                : ""}
+            `;
+
+            container.appendChild(card);
+
+        });
+
+    }catch(e){
+
+        console.log("Projects API failed",e);
+
+    }
+
+}
+
+/* ------------------------------
+   NAVBAR SCROLL EFFECT
+--------------------------------*/
 
 window.addEventListener("scroll",function(){
 
-let nav=document.querySelector("nav");
+    let nav=document.querySelector("nav");
 
-if(window.scrollY>50){
-
-nav.classList.add("scrolled");
-
-}else{
-
-nav.classList.remove("scrolled");
-
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-
-setTimeout(function(){
-
-const loader=document.getElementById("loading-screen");
-
-loader.classList.add("fade-out");
-
-document.body.classList.add("loaded");
-
-setTimeout(function(){
-
-loader.style.display="none";
-
-},800);
-
-},1200);
+    if(window.scrollY>50){
+        nav.classList.add("scrolled");
+    }else{
+        nav.classList.remove("scrolled");
+    }
 
 });
 
-});
+/* ------------------------------
+   REVEAL ANIMATION
+--------------------------------*/
 
 window.addEventListener('scroll',()=>{
 
-let reveals=document.querySelectorAll('.reveal');
+    let reveals=document.querySelectorAll('.reveal');
 
-reveals.forEach(el=>{
+    reveals.forEach(el=>{
 
-let top=el.getBoundingClientRect().top;
+        let top=el.getBoundingClientRect().top;
 
-if(top<window.innerHeight-100){
-el.classList.add('active');
-}
+        if(top<window.innerHeight-100){
+            el.classList.add('active');
+        }
 
-})
+    });
 
-})
+});
+
+/* ------------------------------
+   TYPING HERO TEXT
+--------------------------------*/
 
 let i=0;
+
 let text="Building Scalable Java Backends and AI-Powered Apps";
 
 function typing(){
 
-if(i<text.length){
-document.getElementById("typing").innerHTML+=text.charAt(i);
-i++;
-setTimeout(typing,80);
-}
+    if(i<text.length){
+
+        document.getElementById("typing").innerHTML+=text.charAt(i);
+
+        i++;
+
+        setTimeout(typing,80);
+    }
 
 }
+
+/* ------------------------------
+   PAGE LOAD EVENTS
+--------------------------------*/
+
+document.addEventListener("DOMContentLoaded",function(){
+
+    checkBackend();
+
+});
 
 window.onload=typing;
 
@@ -698,23 +924,8 @@ Spring Boot • Microservices • MongoDB • AI Systems
 <section id="projects" class="reveal">
 <h2>Featured Projects</h2>
 
-<div class="projects-grid">
-
-<div class="card">
-<h3>Dynamic Reminder Scheduler</h3>
-<p>Spring Boot scheduler with MongoDB persistence.</p>
-</div>
-
-<div class="card">
-<h3>AI RAG System</h3>
-<p>Retrieval augmented generation with embeddings.</p>
-</div>
-
-<div class="card">
-<h3>Subscription Platform</h3>
-<p>Enterprise multi-module Spring Boot backend.</p>
-</div>
-
+<div class="projects-grid" id="projects-container">
+<p style="color:#aaa;">Loading projects...</p>
 </div>
 
 </section>
@@ -795,7 +1006,8 @@ Experienced in Spring Boot, MongoDB, REST APIs and Generative AI.
 <h2>Let's Work Together</h2>
 <p>Available for Software Developer roles</p>
 <br>
-<a href="ShardulLote_resume.pdf" class="btn primary" download>
+<a href="https://portfolio-backend-5tl4.onrender.com/api/resume/download" 
+class="btn primary">
 Download Resume
 </a>
 </div>
@@ -818,10 +1030,210 @@ Download Resume
 </section>
 
 <div class="footer">
-© 2026 Shardul Lote
+Made with ❤️ by Shardul Lote
 </div>
 
 </div>
+
+<!-- AI Chatbot -->
+
+<div id="chatbot">
+  <button id="chatbot-toggle">💬</button>
+  <div id="chat-window">
+    <div class="chat-header">
+        AI Assistant
+    </div>
+  <div id="chat-messages"></div>
+  <div class="chat-input">
+    <input id="chat-input" placeholder="Ask about Shardul's work..." />
+    <button id="send-btn">Send</button>
+  </div>
+  </div>
+</div>
+
+<script>
+  /* ------------------------------
+   CHATBOT UI
+--------------------------------*/
+
+document.addEventListener("DOMContentLoaded", function(){
+
+const chatToggle=document.getElementById("chatbot-toggle");
+const chatWindow=document.getElementById("chat-window");
+
+if(chatToggle){
+
+chatToggle.onclick=()=>{
+
+if(chatWindow.style.display==="flex"){
+chatWindow.style.display="none";
+}else{
+chatWindow.style.display="flex";
+}
+
+};
+
+}
+
+});
+
+function showTyping(){
+
+const container=document.getElementById("chat-messages");
+
+const div=document.createElement("div");
+
+div.id="typing-indicator";
+
+div.innerHTML=`
+<b>AI:</b>
+<div class="typing">
+<span></span>
+<span></span>
+<span></span>
+</div>
+`;
+
+container.appendChild(div);
+
+container.scrollTop=container.scrollHeight;
+
+}
+
+function removeTyping(){
+
+const typing=document.getElementById("typing-indicator");
+
+if(typing){
+typing.remove();
+}
+
+}
+
+/* ------------------------------
+   SEND MESSAGE
+--------------------------------*/
+
+document.getElementById("send-btn").onclick=sendMessage;
+
+async function sendMessage(){
+
+const input=document.getElementById("chat-input");
+
+const message=input.value.trim();
+
+if(!message) return;
+
+addMessage("You",message);
+
+input.value="";
+
+const response=await fetch(API_BASE+"/api/chatbot/chat",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+prompt:message
+})
+
+});
+
+const reader=response.body.getReader();
+
+const decoder=new TextDecoder();
+
+let aiMessage="";
+
+showTyping();
+
+const container=document.getElementById("chat-messages");
+
+const aiDiv=document.createElement("div");
+
+aiDiv.innerHTML="<b>AI:</b> ";
+
+container.appendChild(aiDiv);
+
+while(true){
+
+const {done,value}=await reader.read();
+
+if(done) break;
+
+removeTyping();
+
+aiMessage+=decoder.decode(value);
+
+aiDiv.innerHTML="<b>AI:</b> "+aiMessage;
+
+}
+
+}
+
+/* ------------------------------
+   ADD MESSAGE
+--------------------------------*/
+
+function addMessage(sender,text){
+
+const container=document.getElementById("chat-messages");
+
+const div=document.createElement("div");
+
+div.innerHTML=`<b>${sender}:</b> ${text}`;
+
+div.style.marginBottom="10px";
+
+container.appendChild(div);
+
+container.scrollTop=container.scrollHeight;
+
+}
+
+/* ------------------------------
+   CLOSE CHATBOT WHEN CLICKING OUTSIDE
+--------------------------------*/
+
+document.addEventListener("click", function(event){
+
+    const chatbot = document.getElementById("chatbot");
+    const chatWindow = document.getElementById("chat-window");
+    const toggleBtn = document.getElementById("chatbot-toggle");
+
+    if(!chatWindow || !chatbot) return;
+
+    const clickedInside = chatbot.contains(event.target);
+
+    if(!clickedInside && chatWindow.style.display === "flex"){
+
+        chatWindow.style.display = "none";
+
+    }
+
+});
+
+/* ------------------------------
+   CLOSE CHATBOT WITH ESC
+--------------------------------*/
+
+document.addEventListener("keydown", function(e){
+
+    if(e.key === "Escape"){
+
+        const chatWindow = document.getElementById("chat-window");
+
+        if(chatWindow){
+            chatWindow.style.display = "none";
+        }
+
+    }
+
+});
+</script>
 
 </body>
 </html>
