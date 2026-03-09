@@ -635,14 +635,14 @@ cursor:pointer;
 
 /* AI typing indicator */
 
-.typing{
+.ai-typing{
 display:flex;
 gap:4px;
 align-items:center;
 margin-bottom:10px;
 }
 
-.typing span{
+.ai-typing span{
 width:6px;
 height:6px;
 background:#aaa;
@@ -650,11 +650,11 @@ border-radius:50%;
 animation:blink 1.4s infinite;
 }
 
-.typing span:nth-child(2){
+.ai-typing span:nth-child(2){
 animation-delay:0.2s;
 }
 
-.typing span:nth-child(3){
+.ai-typing span:nth-child(3){
 animation-delay:0.4s;
 }
 
@@ -678,6 +678,20 @@ section{padding:80px 0}
 
 .buttons{flex-direction:column}
 
+}
+
+.user-msg{
+background:#0f3460;
+padding:8px 12px;
+border-radius:8px;
+margin-bottom:8px;
+}
+
+.ai-msg{
+background:#222;
+padding:8px 12px;
+border-radius:8px;
+margin-bottom:8px;
 }
 
 </style>
@@ -854,9 +868,19 @@ function typing(){
    PAGE LOAD EVENTS
 --------------------------------*/
 
-document.addEventListener("DOMContentLoaded",function(){
+document.addEventListener("DOMContentLoaded", function(){
 
     checkBackend();
+
+    const chatInput = document.getElementById("chat-input");
+
+    if(chatInput){
+        chatInput.addEventListener("keydown", function(e){
+            if(e.key === "Enter"){
+                sendMessage();
+            }
+        });
+    }
 
 });
 
@@ -1069,6 +1093,7 @@ if(chatWindow.style.display==="flex"){
 chatWindow.style.display="none";
 }else{
 chatWindow.style.display="flex";
+document.getElementById("chat-input").focus();
 }
 
 };
@@ -1087,7 +1112,7 @@ div.id="typing-indicator";
 
 div.innerHTML=`
 <b>AI:</b>
-<div class="typing">
+<div class="ai-typing">
 <span></span>
 <span></span>
 <span></span>
@@ -1115,14 +1140,22 @@ typing.remove();
 --------------------------------*/
 
 document.getElementById("send-btn").onclick=sendMessage;
+let aiBusy = false;
 
 async function sendMessage(){
+
+if(aiBusy) return;
+
+aiBusy = true;
 
 const input=document.getElementById("chat-input");
 
 const message=input.value.trim();
 
-if(!message) return;
+if(!message){
+aiBusy=false;
+return;
+}
 
 addMessage("You",message);
 
@@ -1171,7 +1204,7 @@ aiMessage+=decoder.decode(value);
 aiDiv.innerHTML="<b>AI:</b> "+aiMessage;
 
 }
-
+aiBusy = false;
 }
 
 /* ------------------------------
@@ -1185,6 +1218,12 @@ const container=document.getElementById("chat-messages");
 const div=document.createElement("div");
 
 div.innerHTML=`<b>${sender}:</b> ${text}`;
+
+if(sender==="You"){
+div.className="user-msg";
+}else{
+div.className="ai-msg";
+}
 
 div.style.marginBottom="10px";
 
