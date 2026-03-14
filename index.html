@@ -699,7 +699,7 @@ margin-bottom:8px;
 <script>
 
 const API_BASE = "https://portfolio-backend-5tl4.onrender.com";
-
+const AI_API_BASE = "https://portfolio-backend-ai-service.onrender.com";
 /* ------------------------------
    BACKEND STATUS + LOADER
 --------------------------------*/
@@ -708,9 +708,10 @@ async function checkBackend(){
 
     try{
 
-        const response = await fetch(API_BASE + "/api/status");
+        const response = await fetch(API_BASE + "/api/status").json();
+        const ai_response = await fetch(AI_API_BASE + "/api/chatbot/status").json();
 
-        if(response.ok){
+        if(response.healthy && ai_response.healthy){
 
             const loader = document.getElementById("loading-screen");
 
@@ -753,7 +754,9 @@ async function loadProjects(){
 
         projects.forEach(repo => {
 
-            const updated = new Date(repo.updated_at).toLocaleDateString();
+            const updated = repo.updated_at
+                ? new Date(repo.updated_at).toLocaleDateString()
+                : "Recently";
 
             const card = document.createElement("div");
 
@@ -782,7 +785,7 @@ async function loadProjects(){
                     GitHub
                     </a>
 
-                    ${repo.pagesLive ? 
+                    ${repo.has_pages ? 
                     `<a href="${repo.githubPagesUrl}" target="_blank" class="btn primary">
                     Live Demo
                     </a>` 
@@ -790,7 +793,7 @@ async function loadProjects(){
 
                 </div>
 
-                ${repo.readmePreview ? 
+                ${repo.readmePreview && repo.readmePreview !== "README not available" ? 
                 `<p class="readme-preview">${repo.readmePreview}</p>` 
                 : ""}
             `;
@@ -1161,7 +1164,7 @@ addMessage("You",message);
 
 input.value="";
 
-const response=await fetch(API_BASE+"/api/chatbot/chat",{
+const response=await fetch(AI_API_BASE+"/api/chatbot/chat",{
 
 method:"POST",
 
