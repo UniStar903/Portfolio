@@ -334,12 +334,6 @@ padding:20px 0;
 z-index:1000;
 }
 
-/* nav.scrolled{
-background:rgba(11,11,11,0.95);
-padding:14px 0;
-transition:0.4s;
-} */
-
 .nav-inner{
 display:flex;
 justify-content:space-between;
@@ -486,16 +480,13 @@ margin-bottom:10px;
 display:flex;
 gap:10px;
 margin-top:10px;
-}
-
-.readme-preview{
-font-size:13px;
-color:#bbb;
-margin-top:14px;
-line-height:1.4;
+justify-content: flex-start;
 }
 
 .card{
+display: flex;
+flex-direction: column;
+justify-content: space-between;
 border:1px solid #2a2a2a;
 padding:32px;
 border-radius:18px;
@@ -507,6 +498,17 @@ transition:.4s;
 transform:translateY(-12px);
 border:1px solid var(--brand);
 box-shadow:0 20px 40px rgba(0,0,0,0.5);
+}
+
+.badge{
+    display:inline-block;
+    background:#222;
+    color:#fff;
+    font-size:12px;
+    padding:4px 8px;
+    border-radius:6px;
+    margin-right:6px;
+    margin-top:4px;
 }
 
 .skills{
@@ -699,6 +701,7 @@ margin-bottom:8px;
 <script>
 
 const API_BASE = "https://portfolio-backend-5tl4.onrender.com";
+// const API_BASE = "http://localhost:8080";
 const AI_API_BASE = "https://portfolio-backend-ai-service.onrender.com";
 /* ------------------------------
    BACKEND STATUS + LOADER
@@ -729,9 +732,7 @@ async function checkBackend(){
             setTimeout(()=>{
                 loader.style.display="none";
             },800);
-
             loadProjects();
-
         }
 
     }catch(e){
@@ -760,31 +761,34 @@ async function loadProjects(){
 
         container.innerHTML="";
 
-        projects.forEach(repo => {
+        for(const repo of projects){
 
             const updated = repo.updated_at
                 ? new Date(repo.updated_at).toLocaleDateString()
                 : "Recently";
+
+            const languageBadges = repo.languages
+                ? repo.languages.slice(0, 3).map(l => `<span class="badge">${l}</span>`).join(" ")
+                : "";
 
             const card = document.createElement("div");
 
             card.className="card reveal";
 
             card.innerHTML = `
+
                 <h3>${repo.name}</h3>
 
                 <p>${repo.description || "No description available"}</p>
 
                 <div class="repo-meta">
 
-                    ${repo.language ? `<span class="badge">${repo.language}</span>` : ""}
-
-                    ${repo.stargazers_count > 0 ? `<span>⭐ ${repo.stargazers_count}</span>` : ""}
+                    ${languageBadges}
 
                 </div>
 
                 <p class="updated">
-                Updated: ${updated}
+                    Updated: ${updated}
                 </p>
 
                 <div class="repo-buttons">
@@ -800,15 +804,11 @@ async function loadProjects(){
                     : ""}
 
                 </div>
-
-                ${repo.readmePreview && repo.readmePreview !== "README not available" ? 
-                `<p class="readme-preview">${repo.readmePreview}</p>` 
-                : ""}
             `;
 
             container.appendChild(card);
 
-        });
+        }
 
     }catch(e){
 
@@ -939,13 +939,13 @@ window.onload=typing;
 <section class="hero">
 <div>
 <h1>
-Java Developer
+Java Backend Developer
 </h1>
 
 <h2 class="typing" id="typing"></h2>
 
 <p>
-Spring Boot • Microservices • MongoDB • AI Systems
+Spring Boot • Microservices • Java • GenAI Apps
 </p>
 
 <div class="buttons">
@@ -1006,11 +1006,9 @@ Spring Boot • Microservices • MongoDB • AI Systems
 <h2>About Me</h2>
 
 <p>
-Full Stack Java Developer building scalable backend systems and AI-powered applications.
-</p>
-
-<p>
-Experienced in Spring Boot, MongoDB, REST APIs and Generative AI.
+Software Developer from Maharashtra, India, with over 6 months of internship experience in software engineering.
+<br>At 22 years old, I have built a strong foundation in Backend development, working with modern technologies across both front-end and back-end systems.
+<br>My experience includes building scalable applications using Java and Spring Boot, integrating APIs, working with databases, and developing responsive user interfaces.
 </p>
 
 </section>
@@ -1027,8 +1025,8 @@ Experienced in Spring Boot, MongoDB, REST APIs and Generative AI.
 
 <div class="timeline-item">
 <h3>Software Engineer Intern</h3>
-<p>Kala and Kriti</p>
-<p>Developed production backend systems using Spring Boot.</p>
+<p>Kala n Kriti</p>
+<p>Developed a scalable backend systems using Spring Boot, Integrated AI features (microservice).</p>
 </div>
 
 </div>
@@ -1039,7 +1037,7 @@ Experienced in Spring Boot, MongoDB, REST APIs and Generative AI.
 
 <div class="contact">
 <h2>Let's Work Together</h2>
-<p>Available for Software Developer roles</p>
+<p>open to relocation for the right opportunity</p>
 <br>
 <a href="https://portfolio-backend-5tl4.onrender.com/api/resume/download" 
 class="btn primary">
