@@ -703,15 +703,23 @@ const AI_API_BASE = "https://portfolio-backend-ai-service.onrender.com";
 /* ------------------------------
    BACKEND STATUS + LOADER
 --------------------------------*/
+let backendReady = false;
 
 async function checkBackend(){
 
+    if(backendReady) return;
+
     try{
 
-        const response = await fetch(API_BASE + "/api/status").json();
-        const ai_response = await fetch(AI_API_BASE + "/api/chatbot/status").json();
+        const response = await fetch(API_BASE + "/api/status");
+        const ai_response = await fetch(AI_API_BASE + "/api/chatbot/status");
 
-        if(response.healthy && ai_response.healthy){
+        const backend = await response.json();
+        const ai = await ai_response.json();
+
+        if(backend.healthy && ai.healthy){
+
+            backendReady = true;
 
             const loader = document.getElementById("loading-screen");
 
@@ -722,14 +730,14 @@ async function checkBackend(){
                 loader.style.display="none";
             },800);
 
-            loadProjects(); // load GitHub projects
+            loadProjects();
 
         }
 
     }catch(e){
 
         console.log("Backend waking up...");
-        setTimeout(checkBackend,2000);
+        setTimeout(checkBackend,5000);
 
     }
 }
