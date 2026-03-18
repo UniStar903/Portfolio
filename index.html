@@ -55,7 +55,7 @@ top: 0;
 left: 0;
 
 width: 100%;
-height: 100vh;
+height: 100%;
 
 background-color: #0a0a0a;
 
@@ -726,44 +726,57 @@ margin-right: auto;
 <script>
 
 const API_BASE = "https://portfolio-backend-5tl4.onrender.com";
-// const API_BASE = "http://localhost:8080";
+//const API_BASE = "http://localhost:8080";
 const AI_API_BASE = "https://portfolio-backend-ai-service.onrender.com";
 /* ------------------------------
    BACKEND STATUS + LOADER
 --------------------------------*/
 let backendReady = false;
 
-async function checkBackend(){
+async function checkBackend() {
 
-    if(backendReady) return;
+    if (backendReady) return;
 
-    try{
+    const loader = document.getElementById("loading-screen");
+    const timeoutFetch = (url, timeout = 5000) =>
+        Promise.race([
+            fetch(url),
+            new Promise((_, reject) =>
+                setTimeout(() => reject(new Error("Timeout")), timeout)
+            )
+        ]);
 
-        const response = await fetch(API_BASE + "/api/status");
-        const ai_response = await fetch(AI_API_BASE + "/api/chatbot/status");
+    try {
+        const [response, ai_response] = await Promise.all([
+            timeoutFetch(API_BASE + "/api/status"),
+            timeoutFetch(AI_API_BASE + "/api/chatbot/status")
+        ]);
 
-        const backend = await response.json();
-        const ai = await ai_response.json();
-
-        if(backend.healthy && ai.healthy){
+        const [backend, ai] = await Promise.all([
+            response.json(),
+            ai_response.json()
+        ]);
+        if (backend.healthy) {
 
             backendReady = true;
-
-            const loader = document.getElementById("loading-screen");
 
             loader.classList.add("fade-out");
             document.body.classList.add("loaded");
 
-            setTimeout(()=>{
-                loader.style.display="none";
-            },800);
+            setTimeout(() => {
+                loader.style.display = "none";
+            }, 800);
+
             loadProjects();
+            if (!ai.healthy) {
+                console.log("AI service still warming up...");
+            }
+
         }
 
-    }catch(e){
-        console.log("Backend waking up...");
-        setTimeout(checkBackend,5000);
-
+    } catch (e) {
+        console.log("Backend waking up...", e.message);
+        setTimeout(checkBackend, 5000);
     }
 }
 
@@ -944,7 +957,8 @@ window.onload=typing;
 
 </div>
 
-<div class="hero-bg"></div>
+<div class="hero-bg">
+</div>
 
 <nav>
 <div class="container nav-inner">
