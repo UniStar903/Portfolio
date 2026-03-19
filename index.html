@@ -18,7 +18,7 @@
 --accent:#AAAAAA;
 }
 
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 html{scroll-behavior:smooth}
 
@@ -381,9 +381,11 @@ animation:blink 1s infinite;
 p{color:var(--secondary);margin-top:16px}
 
 .hero{
-height:100vh;
+min-height: 100vh;
+min-height: 100svh;
 display:flex;
 align-items:center;
+padding-top: 100px;
 }
 
 .typing{
@@ -537,6 +539,7 @@ border-radius:24px;
 }
 
 .footer{
+width: auto;
 text-align:center;
 padding:20px;
 color:#888787;
@@ -600,6 +603,7 @@ z-index:1000;
 }
 
 .chat-header{
+width: stretch;
 padding:12px;
 background:#0f3460;
 color:white;
@@ -616,6 +620,7 @@ font-size:14px;
 }
 
 .chat-input{
+width: stretch;
 display:flex;
 border-top:1px solid #333;
 height: 70px;
@@ -685,6 +690,18 @@ section{padding:80px 0}
 
 .buttons{flex-direction:column}
 
+.nav-inner{
+  flex-direction:column;
+  align-items:flex-start;
+  gap:10px;
+}
+
+nav a{margin-left:0; margin-right:24px;}
+
+}
+
+@media(max-width:420px){
+  *{margin:0;padding:0;box-sizing:border-box;width: fit-content;}
 }
 
 .user-msg{
@@ -1082,7 +1099,6 @@ class="btn primary">
 Download Resume
 </a>
 </div>
-<br>
 
 <div class="icons-to-redirect">
 <a href="https://github.com/UniStar903" target="_blank">
