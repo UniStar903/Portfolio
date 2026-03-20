@@ -6,7 +6,7 @@
 <meta name="description" content="Shardul Lote - Full Stack Java Developer Portfolio Spring Boot MongoDB REST API AI">
 <title>Shardul Lote | Java Developer Portfolio</title>
 
-<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=general-sans@400,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=general-sans@400,500&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
@@ -20,13 +20,17 @@
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
-html{scroll-behavior:smooth}
+html{
+scroll-behavior:smooth;
+}
 
 body{
 font-family:'General Sans',sans-serif;
 background:var(--bg);
 color:var(--text);
 line-height:1.5;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
 /* opacity:0;
 transition:opacity 1s ease; */
 }
@@ -34,6 +38,10 @@ transition:opacity 1s ease; */
 /* body.loaded{
 opacity:1;
 } */
+html, body {
+  overscroll-behavior: none;
+}
+
 
 img{
 max-width:100%;
@@ -329,7 +337,8 @@ nav{
 position:fixed;
 width:100%;
 background:rgba(11,11,11,0.6);
-backdrop-filter:blur(12px);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
 padding:20px 0;
 z-index:1000;
 }
@@ -383,6 +392,7 @@ p{color:var(--secondary);margin-top:16px}
 .hero{
 min-height: 100vh;
 min-height: 100svh;
+min-height: 100dvh;
 display:flex;
 align-items:center;
 padding-top: 100px;
@@ -494,6 +504,7 @@ padding:32px;
 border-radius:18px;
 background:rgba(255,255,255,0.02);
 transition:.4s;
+will-change: transform;
 }
 
 .card:hover{
@@ -539,7 +550,7 @@ border-radius:24px;
 }
 
 .footer{
-width: auto;
+width: 100%;
 text-align:center;
 padding:20px;
 color:#888787;
@@ -563,7 +574,8 @@ position:absolute;
 width:500px;
 height:500px;
 background:var(--brand);
-filter:blur(160px);
+filter: blur(120px); /* reduce slightly */
+will-change: transform;
 opacity:0.35;
 right:10%;
 top:20%;
@@ -603,7 +615,7 @@ z-index:1000;
 }
 
 .chat-header{
-width: stretch;
+width: 100%;
 padding:12px;
 background:#0f3460;
 color:white;
@@ -620,7 +632,7 @@ font-size:14px;
 }
 
 .chat-input{
-width: stretch;
+width: 100%;
 display:flex;
 border-top:1px solid #333;
 height: 70px;
@@ -876,16 +888,21 @@ async function loadProjects(){
    NAVBAR SCROLL EFFECT
 --------------------------------*/
 
-window.addEventListener("scroll",function(){
+let ticking = false;
 
-    let nav=document.querySelector("nav");
-
-    if(window.scrollY>50){
-        nav.classList.add("scrolled");
-    }else{
-        nav.classList.remove("scrolled");
-    }
-
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      document.querySelectorAll('.hero-bg').forEach(el => {
+        let top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+          el.classList.add('active');
+        }
+      });
+      ticking = false;
+    });
+    ticking = true;
+  }
 });
 
 /* ------------------------------
@@ -914,7 +931,7 @@ window.addEventListener('scroll',()=>{
 
 let i=0;
 
-let text="Building Scalable Java Backends and AI-Powered Apps";
+let text="Building Scalable AI-Powered Apps";
 
 function typing(){
 
@@ -1042,8 +1059,8 @@ Spring Boot • Microservices • Java • GenAI Apps
 <div>
 <h3>AI</h3>
 <p>Python</p>
-<p>Machine Learning</p>
-<p>Generative AI</p>
+<p>LangGraph</p>
+<p>Agentic AI</p>
 </div>
 
 <div>
@@ -1073,13 +1090,13 @@ Software Developer from Maharashtra, India, with over 6 months of internship exp
 
 <div class="timeline">
 <div class="timeline-item">
-<h3>GenAI Software Developer Intern</h3>
+<h3>GenAI Software Developer Intern (Present)</h3>
 <p>Intelliswift</p>
 <p>Developed AI powered application using LLMs, RAG, and LangChain/Graph.</p>
 </div>
 
 <div class="timeline-item">
-<h3>Software Engineer Intern</h3>
+<h3>Software Engineer Intern (6 Months)</h3>
 <p>Kala n Kriti</p>
 <p>Developed a scalable backend systems using Spring Boot, Integrated AI features (microservice).</p>
 </div>
