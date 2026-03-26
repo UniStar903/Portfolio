@@ -334,12 +334,18 @@ transition: opacity 0.8s ease;
   }
 }
 
+.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
 /* Loading End */
 
 nav{
 position:fixed;
 width:100%;
 background:rgba(11,11,11,0.6);
+border-radius: 24px;
 backdrop-filter: blur(12px);
 -webkit-backdrop-filter: blur(12px);
 padding:20px 0;
@@ -352,13 +358,31 @@ justify-content:space-between;
 align-items:center;
 }
 
-nav a{
-margin-left:24px;
-text-decoration:none;
-color:var(--secondary);
+/* ── CHANGE 1: symmetrical nav-links ── */
+/* REMOVED: nav a { margin-left:24px; ... } */
+/* ADDED: pill container with equal padding per link */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 4px;
 }
 
-nav a:hover{color:white}
+.nav-links a {
+  text-decoration: none;
+  color: var(--secondary);
+  padding: 7px 20px;
+  border-radius: 7px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-links a:hover {
+  color: white;
+  background: rgba(255,255,255,0.08);
+}
 
 section{padding:128px 0}
 
@@ -401,12 +425,108 @@ align-items:center;
 padding-top: 100px;
 }
 
-.typing{
-color:var(--brand);
-font-weight:700;
+/* ── CHANGE 2: hero inner layout for profile picture ── */
+.hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  width: 100%;
 }
 
-.buttons{margin-top:32px;display:flex;gap:16px}
+.hero-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* .hero-photo {
+  flex-shrink: 0;
+} */
+
+.about-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  width: 100%;
+}
+
+.about-text {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.about-photo {
+  flex-shrink: 0;
+}
+
+/* ── CHANGE 3: profile picture — droplet animation frame ── */
+.profile-pic-wrapper {
+  width: 220px;
+  height: 270px;
+  border: 2px solid var(--brand);
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(128,0,32,0.35);
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: droplet 6s ease-in-out infinite;
+}
+
+.profile-pic-rounded {
+  width: 220px;
+  height: 270px;
+  border: 2px solid var(--brand);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(128,0,32,0.35);
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: jelly 6s ease-in-out infinite;
+}
+
+@keyframes droplet {
+  0%   { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+  20%  { border-radius: 40% 60% 45% 55% / 60% 40% 55% 45%; }
+  40%  { border-radius: 55% 45% 60% 40% / 45% 55% 50% 60%; }
+  60%  { border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%; }
+  80%  { border-radius: 50% 50% 55% 45% / 40% 60% 45% 55%; }
+  100% { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+}
+
+@keyframes jelly {
+  0%   { border-radius: 30% 10% 25% 15% / 20% 30% 10% 20%; }
+  20%  { border-radius: 10% 30% 15% 25% / 30% 20% 25% 15%; }
+  40%  { border-radius: 25% 15% 30% 10% / 15% 35% 20% 30%; }
+  60%  { border-radius: 15% 25% 10% 30% / 35% 15% 30% 20%; }
+  80%  { border-radius: 20% 20% 25% 15% / 10% 30% 15% 25%; }
+  100% { border-radius: 30% 10% 25% 15% / 20% 30% 10% 20%; }
+}
+
+.profile-pic-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* .profile-initials {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--brand);
+  user-select: none;
+} */
+
+.typing{
+color:var(--brand);
+font-weight:600;
+}
+
+/* .buttons{margin-top:32px;display:flex;gap:16px} */
 
 .btn{
 padding:16px 32px;
@@ -606,7 +726,7 @@ z-index:1000;
 position:fixed;
 bottom:30px;
 right:30px;
-width:320px;
+width:344px;
 height:420px;
 background:#1a1a2e;
 border-radius:12px;
@@ -703,7 +823,19 @@ h1{font-size:2.5rem}
 
 section{padding:80px 0}
 
-.buttons{flex-direction:column}
+/* .buttons{flex-direction:column} */
+
+.hero-inner {
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.about-inner {
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
 
 .nav-inner{
   flex-direction:column;
@@ -711,8 +843,41 @@ section{padding:80px 0}
   gap:10px;
 }
 
-nav a{margin-left:0; margin-right:24px;}
+/* nav-links full width on mobile */
+.nav-links { width: 100%; justify-content: space-between; }
+.nav-links a { padding: 7px 10px; flex: 1; text-align: center; }
 
+}
+
+/* ── Below 401px: stack vertically, photo on top ── */
+@media(max-width:400px){
+  .hero-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .hero-photo {
+    order: -1;
+  }
+  .about-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .about-photo {
+    order: -1;
+  }
+  .profile-pic-wrapper {
+    width: 160px;
+    height: 200px;
+  }
+  .profile-pic-rounded {
+    width: 160px;
+    height: 200px;
+  }
+  /* .profile-initials {
+    font-size: 3rem;
+  } */
 }
 
 @media(max-width:420px){
@@ -768,7 +933,7 @@ let backendReady = false;
 async function checkBackend() {
 
     if (backendReady) return;
-
+    document.body.classList.add("no-scroll"); 
     const loader = document.getElementById("loading-screen");
     const timeoutFetch = (url, timeout = 5000) =>
         Promise.race([
@@ -789,17 +954,18 @@ async function checkBackend() {
             ai_response.json()
         ]);
         if (backend.healthy) {
+            loadProjects();
 
             backendReady = true;
 
             loader.classList.add("fade-out");
             document.body.classList.add("loaded");
+            document.body.classList.remove("no-scroll");
 
             setTimeout(() => {
                 loader.style.display = "none";
             }, 800);
 
-            loadProjects();
             if (!ai.healthy) {
                 console.log("AI service still warming up...");
             }
@@ -934,7 +1100,7 @@ window.addEventListener('scroll',()=>{
 
 let i=0;
 
-let text="Building Scalable AI-Powered Apps";
+let text="with some GenAI magic...";
 
 function typing(){
 
@@ -947,6 +1113,51 @@ function typing(){
         setTimeout(typing,80);
     }
 
+}
+
+/* ------------------------------
+   DOWNLOAD RESUME
+--------------------------------*/
+
+async function downloadResume(){
+    const resumeUrl = API_BASE + "/api/resume/download";
+    
+    try {
+        const response = await fetch(resumeUrl);
+        
+        if(!response.ok){
+            throw new Error("Failed to download resume");
+        }
+        
+        // Get filename from Content-Disposition header or default
+        const contentDisposition = response.headers.get("Content-Disposition");
+        let filename = "Shardul_Lote_Resume.pdf";
+        
+        if(contentDisposition && contentDisposition.includes("filename")){
+            filename = contentDisposition.split("filename=")[1].replace(/"/g, "");
+        }
+        
+        // Convert response to blob
+        const blob = await response.blob();
+        
+        // Create a temporary URL for the blob
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        // Create a temporary anchor element and trigger download
+        const anchorElement = document.createElement("a");
+        anchorElement.href = blobUrl;
+        anchorElement.download = filename;
+        document.body.appendChild(anchorElement);
+        anchorElement.click();
+        
+        // Clean up
+        document.body.removeChild(anchorElement);
+        window.URL.revokeObjectURL(blobUrl);
+        
+    } catch(error) {
+        console.error("Resume download failed:", error);
+        alert("Failed to download resume. Please try again.");
+    }
 }
 
 /* ------------------------------
@@ -1000,10 +1211,11 @@ window.onload=typing;
 <nav>
 <div class="container nav-inner">
 <div><b>Shardul Lote</b></div>
-<div>
+<!-- CHANGE 1: added class="nav-links" to the wrapper div, removed inline margin from individual <a> tags -->
+<div class="nav-links">
+<a href="#about">About</a>
 <a href="#projects">Projects</a>
 <a href="#skills">Skills</a>
-<a href="#about">About</a>
 <a href="#contact">Contact</a>
 </div>
 </div>
@@ -1012,22 +1224,47 @@ window.onload=typing;
 <div class="container">
 
 <section class="hero">
-<div>
-<h1>
-Java Backend Developer
-</h1>
+<!-- CHANGE 2 & 3: wrapped hero content in .hero-inner flex layout; added .hero-photo with droplet-animated profile picture -->
+<div class="hero-inner">
+  <div class="hero-text">
+    <h1>
+    Software Developer
+    </h1>
 
-<h2 class="typing" id="typing"></h2>
+    <h2 class="typing" id="typing"></h2>
 
-<p>
-Spring Boot • Microservices • Java • GenAI Apps
-</p>
+    <p>
+    Spring Boot • Microservices • Java • GenAI Apps
+    </p>
 
-<div class="buttons">
-<a href="#projects" class="btn primary">View Projects</a>
-<a href="#contact" class="btn secondary">Contact Me</a>
+    <!-- <div class="buttons">
+    <a href="#projects" class="btn primary">View Projects</a>
+    <a href="#contact" class="btn secondary">Contact Me</a>
+    </div> -->
+  </div>
 </div>
+</section>
 
+<section id="about" class="reveal">
+<div class="about-inner">
+  <div class="about-photo">
+    <div class="profile-pic-rounded">
+      <img
+        src="cyberpunk_portrait_bg_blur.webp"
+        alt="Shardul Lote"
+      />
+    </div>
+  </div>
+  <div class="about-text">
+    <h2>About Me</h2>
+
+    <p>
+    Software Developer from Maharashtra, India, with over 9 months of internship experience in software engineering.
+    </p>
+    <p>
+      At 22 years old, I have built a strong foundation in Backend development, working with modern technologies across both front-end and back-end systems.
+    </p>
+  </div>
 </div>
 </section>
 
@@ -1077,16 +1314,6 @@ Spring Boot • Microservices • Java • GenAI Apps
 
 </section>
 
-<section id="about" class="reveal">
-<h2>About Me</h2>
-
-<p>
-Software Developer from Maharashtra, India, with over 6 months of internship experience in software engineering.
-<br>At 22 years old, I have built a strong foundation in Backend development, working with modern technologies across both front-end and back-end systems.
-<br>My experience includes building scalable applications using Java and Spring Boot, integrating APIs, working with databases, and developing responsive user interfaces.
-</p>
-
-</section>
 
 <section class="reveal">
 <h2>Experience</h2>
@@ -1114,8 +1341,7 @@ Software Developer from Maharashtra, India, with over 6 months of internship exp
 <h2>Let's Work Together</h2>
 <p>open to relocation for the right opportunity</p>
 <br>
-<a href="https://portfolio-backend-5tl4.onrender.com/api/resume/download" 
-class="btn primary">
+<a class="btn primary" onclick="downloadResume()">
 Download Resume
 </a>
 </div>
@@ -1148,11 +1374,11 @@ Made with ❤️ by Shardul Lote
   <button id="chatbot-toggle">💬</button>
   <div id="chat-window">
     <div class="chat-header">
-        AI Assistant
+        AI ChatBot
     </div>
   <div id="chat-messages"></div>
   <div class="chat-input">
-    <input id="chat-input" placeholder="Ask about Shardul's work..." />
+    <input id="chat-input" placeholder="Ask something about Shardul..." />
     <button id="send-btn">Send</button>
   </div>
   </div>
