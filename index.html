@@ -22,6 +22,7 @@
 
 html{
 scroll-behavior:smooth;
+cursor: context-menu;
 }
 
 body{
@@ -539,6 +540,7 @@ transform:translateY(0);
 
 .btn:hover{
 transform:translateY(-4px);
+cursor: pointer;
 }
 
 .primary{
@@ -1132,11 +1134,11 @@ async function downloadResume(){
         // Get filename from Content-Disposition header or default
         const contentDisposition = response.headers.get("Content-Disposition");
         let filename = "Shardul_Lote_Resume.pdf";
-        
+        document.getElementById("download-btn").style.cursor = "progress";
+        document.getElementById("download-btn").innerText = "Downloading...";
         if(contentDisposition && contentDisposition.includes("filename")){
             filename = contentDisposition.split("filename=")[1].replace(/"/g, "");
         }
-        
         // Convert response to blob
         const blob = await response.blob();
         
@@ -1153,7 +1155,8 @@ async function downloadResume(){
         // Clean up
         document.body.removeChild(anchorElement);
         window.URL.revokeObjectURL(blobUrl);
-        
+        document.getElementById("download-btn").style.cursor = "pointer";
+        document.getElementById("download-btn").innerText = "Download Resume";
     } catch(error) {
         console.error("Resume download failed:", error);
         alert("Failed to download resume. Please try again.");
@@ -1341,7 +1344,7 @@ window.onload=typing;
 <h2>Let's Work Together</h2>
 <p>open to relocation for the right opportunity</p>
 <br>
-<a class="btn primary" onclick="downloadResume()">
+<a id="download-btn" class="btn primary" onclick="downloadResume()">
 Download Resume
 </a>
 </div>
