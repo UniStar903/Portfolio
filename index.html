@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Shardul Lote - Full Stack Java Developer Portfolio Spring Boot MongoDB REST API AI">
-<title>Shardul Lote | Java Developer Portfolio</title>
+<meta name="description" content="Shardul Lote - Developer Portfolio">
+<title>Shardul Lote</title>
 
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=general-sans@400,500&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link id="dynamic-favicon" rel="icon" >
 
 <style>
 :root{
@@ -32,6 +33,7 @@ color:var(--text);
 line-height:1.5;
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
+text-rendering: optimizeLegibility;
 /* opacity:0;
 transition:opacity 1s ease; */
 }
@@ -41,6 +43,7 @@ opacity:1;
 } */
 html, body {
   overscroll-behavior: none;
+  -ms-scroll-chaining: none;
 }
 /* 
 body {
@@ -193,7 +196,9 @@ transition: opacity 0.8s ease;
   );
   background-size: 200% auto;
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .loader .text:nth-child(2) span {
@@ -204,7 +209,9 @@ transition: opacity 0.8s ease;
   );
   background-size: 200% auto;
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .loader .text:nth-child(3) span {
@@ -215,7 +222,9 @@ transition: opacity 0.8s ease;
   );
   background-size: 200% auto;
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .loader .text:nth-child(4) span {
@@ -226,7 +235,9 @@ transition: opacity 0.8s ease;
   );
   background-size: 200% auto;
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .loader .text:nth-child(6) span {
@@ -237,7 +248,9 @@ transition: opacity 0.8s ease;
   );
   background-size: 200% auto;
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .loader .text:nth-child(7) span {
@@ -248,7 +261,9 @@ transition: opacity 0.8s ease;
   );
   background-size: 200% auto;
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .loader .text:nth-child(8) span {
@@ -259,7 +274,9 @@ transition: opacity 0.8s ease;
   );
   background-size: 200% auto;
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .loader .text:nth-child(9) span {
@@ -270,7 +287,9 @@ transition: opacity 0.8s ease;
   );
   background-size: 200% auto;
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .loader .line {
@@ -345,7 +364,7 @@ transition: opacity 0.8s ease;
 nav{
 position:fixed;
 width:100%;
-background:rgba(11,11,11,0.6);
+background:rgba(11,11,11,0.85);
 border-radius: 24px;
 backdrop-filter: blur(12px);
 -webkit-backdrop-filter: blur(12px);
@@ -629,11 +648,11 @@ padding:32px;
 border-radius:18px;
 background:rgba(255,255,255,0.02);
 transition:.4s;
-will-change: transform;
 }
 
 .card:hover{
 transform:translateY(-12px);
+will-change: transform;
 border:1px solid var(--brand);
 box-shadow:0 20px 40px rgba(0,0,0,0.5);
 }
@@ -755,6 +774,13 @@ overflow-y: auto;
 max-height: 300px;
 font-size:14px;
 }
+
+#chat-messages {
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+#chat-messages::-webkit-scrollbar { width: 4px; }
+#chat-messages::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
 
 .chat-input{
 width: 100%;
@@ -924,6 +950,46 @@ margin-right: auto;
 
 <script>
 
+const canvas = document.createElement("canvas");
+canvas.width = 55;
+canvas.height = 55;
+const ctx = canvas.getContext("2d");
+
+const favicon = document.getElementById("dynamic-favicon");
+
+let angle = 0;
+
+function animate() {
+  ctx.clearRect(0, 0, 64, 64);
+
+  ctx.save();
+  ctx.translate(32, 32);
+  ctx.rotate(angle);
+
+  // smoother shape (slightly refined)
+  ctx.fillStyle =  "#800020";
+  ctx.shadowColor = "#E8E8E8";
+  ctx.shadowBlur = 5;
+
+  ctx.beginPath();
+  ctx.moveTo(0, -18);
+  ctx.lineTo(16, 14);
+  ctx.lineTo(-16, 14);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+
+  favicon.href = canvas.toDataURL("image/png");
+
+  angle += 0.08;
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+
 const API_BASE = "https://portfolio-backend-5tl4.onrender.com";
 //const API_BASE = "http://localhost:8080";
 const AI_API_BASE = "https://portfolio-backend-ai-service.onrender.com";
@@ -1013,11 +1079,12 @@ async function loadProjects(){
             card.className="card reveal";
 
             card.innerHTML = `
-
+                <div>
                 <h3>${repo.name}</h3>
 
                 <p>${repo.description || "No description available"}</p>
-
+                </div>
+                <div>
                 <div class="repo-meta">
 
                     ${languageBadges}
@@ -1030,16 +1097,17 @@ async function loadProjects(){
 
                 <div class="repo-buttons">
 
-                    <a href="${repo.html_url}" target="_blank" class="btn secondary">
+                    <a href="${repo.html_url}" target="_blank" class="btn secondary" style="cursor: alias;">
                     GitHub
                     </a>
 
                     ${repo.has_pages ? 
-                    `<a href="${repo.githubPagesUrl}" target="_blank" class="btn primary">
+                    `<a href="${repo.githubPagesUrl}" target="_blank" class="btn primary" style="cursor: alias;">
                     Live Demo
                     </a>` 
                     : ""}
 
+                </div>
                 </div>
             `;
 
@@ -1255,6 +1323,7 @@ window.onload=typing;
       <img
         src="cyberpunk_portrait_bg_blur.webp"
         alt="Shardul Lote"
+        loading="lazy"
       />
     </div>
   </div>
@@ -1350,7 +1419,7 @@ Download Resume
 </div>
 
 <div class="icons-to-redirect">
-<a href="https://github.com/UniStar903" target="_blank">
+<a href="https://github.com/UniStar903" target="_blank" >
 <i class="fab fa-github"></i>
 </a>
 
@@ -1358,7 +1427,7 @@ Download Resume
 <i class="fab fa-linkedin"></i>
 </a>
 
-<a href="mailto:shardullote@gmail.com">
+<a href="mailto:shardullote@gmail.com?subject=Employment%20Opportunity&body=Hi%20Shardul,%0A%0AI%20came%20across%20your%20portfolio%20and%20was%20impressed%20by%20your%20skills.%20I%20would%20like%20to%20discuss%20potential%20opportunities%20with%20you.%0A%0ABest,%0A[Your Name]" target="_blank">
 <i class="fas fa-envelope"></i>
 </a>
 </div>
@@ -1374,7 +1443,7 @@ Made with ❤️ by Shardul Lote
 <!-- AI Chatbot -->
 
 <div id="chatbot">
-  <button id="chatbot-toggle">💬</button>
+  <button id="chatbot-toggle" aria-label="AI chatbot impersonating Shardul">💬</button>
   <div id="chat-window">
     <div class="chat-header">
         AI ChatBot
