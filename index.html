@@ -2,14 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0">
 <meta name="description" content="Shardul Lote - Developer Portfolio">
 <title>Shardul Lote</title>
 
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=general-sans@400,500&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link id="dynamic-favicon" rel="icon" >
-
+<script>
+  (function() {
+    var screenWidth = window.screen.width;
+    if (screenWidth <= 420) {
+      var scale = screenWidth / 420;
+      var meta = document.querySelector('meta[name="viewport"]');
+      meta.setAttribute('content',
+        'width=420, initial-scale=' + scale +
+        ', maximum-scale=' + scale +
+        ', user-scalable=no'
+      );
+    }
+  })();
+</script>
 <style>
 :root{
 --bg:#0B0B0B;
@@ -909,7 +922,7 @@ section{padding:80px 0}
 }
 
 @media(max-width:420px){
-  *{margin:0;padding:0;box-sizing:border-box;width: fit-content;}
+  *{ margin:0; padding:0; box-sizing:border-box; width: fit-content; }
 }
 
 .user-msg{
