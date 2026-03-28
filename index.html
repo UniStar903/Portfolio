@@ -1193,6 +1193,8 @@ async function downloadResume(){
     const resumeUrl = API_BASE + "/api/resume/download";
     
     try {
+        document.getElementById("download-btn").style.cursor = "progress";
+        document.getElementById("download-btn").innerText = "Downloading...";
         const response = await fetch(resumeUrl);
         
         if(!response.ok){
@@ -1202,8 +1204,6 @@ async function downloadResume(){
         // Get filename from Content-Disposition header or default
         const contentDisposition = response.headers.get("Content-Disposition");
         let filename = "Shardul_Lote_Resume.pdf";
-        document.getElementById("download-btn").style.cursor = "progress";
-        document.getElementById("download-btn").innerText = "Downloading...";
         if(contentDisposition && contentDisposition.includes("filename")){
             filename = contentDisposition.split("filename=")[1].replace(/"/g, "");
         }
