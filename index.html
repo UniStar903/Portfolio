@@ -378,11 +378,14 @@ nav{
 position:fixed;
 width:100%;
 background:rgba(11,11,11,0.85);
-border-radius: 24px;
 backdrop-filter: blur(12px);
 -webkit-backdrop-filter: blur(12px);
 padding:20px 0;
 z-index:1000;
+}
+
+.para-name{
+  display: none;
 }
 
 .nav-inner{
@@ -888,6 +891,13 @@ section{padding:80px 0}
 .nav-links { width: 100%; justify-content: space-between; }
 .nav-links a { padding: 7px 10px; flex: 1; text-align: center; }
 
+  .nav-name {
+    display: none;
+  }
+
+  .para-name{
+    display: contents;
+  }
 }
 
 /* ── Below 401px: stack vertically, photo on top ── */
@@ -1284,7 +1294,7 @@ window.onload=typing;
 
 <nav>
 <div class="container nav-inner">
-<div><b>Shardul Lote</b></div>
+<div class="nav-name"><b>Shardul Lote</b></div>
 <!-- CHANGE 1: added class="nav-links" to the wrapper div, removed inline margin from individual <a> tags -->
 <div class="nav-links">
 <a href="#about">About</a>
@@ -1332,7 +1342,7 @@ window.onload=typing;
   </div>
   <div class="about-text">
     <h2>About Me</h2>
-
+    <p class="para-name">My name is Shardul.</p>
     <p>
     Software Developer from Maharashtra, India, with over 9 months of internship experience in software engineering.
     </p>
