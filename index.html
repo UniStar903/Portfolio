@@ -709,6 +709,21 @@ padding:100px 20px;
 border-radius:24px;
 }
 
+#toast{
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  background: #1a1a1a;
+  color: #fff;
+  padding: .75rem 1.25rem;
+  border-radius: 8px;
+  font-size: .875rem;
+  opacity: 0;
+  transition: opacity .25s ease;
+  pointer-events: none;
+  z-index: 9999;
+}
+
 .footer{
 width: 100%;
 text-align:center;
@@ -1211,38 +1226,65 @@ function typing(){
 /* ------------------------------
    DOWNLOAD RESUME
 --------------------------------*/
+let prefetchResumePromise = null;
+let toastTimer = null;
+
+function showToast(msg, isError = false) {
+  const toast = document.getElementById("toast");
+  clearTimeout(toastTimer);
+  toast.textContent = msg;
+  toast.style.background = isError ? "#c0392b" : "#1a1a1a";
+  toast.style.opacity = "1";
+  toastTimer = setTimeout(() => (toast.style.opacity = "0"), 3500);
+}
+
+function prefetchResume() {
+  if (prefetchResumePromise) return;
+
+  prefetchResumePromise = fetch(API_BASE + "/api/resume/download")
+    .then(res => {
+      if (!res.ok) throw new Error("bad_response");
+      const cd = res.headers.get("Content-Disposition");
+      const filename = cd?.includes("filename")
+        ? cd.split("filename=")[1].replace(/"/g, "")
+        : "Shardul_Lote_Resume.pdf";
+      return res.blob().then(blob => ({ blob, filename }));
+    })
+    .catch(err => {
+      prefetchResumePromise = null;   // ✅ correct name
+      throw err;
+    });
+}
 
 async function downloadResume() {
-    const btn = document.getElementById("download-btn");
+  const btn = document.getElementById("download-btn");
+  btn.style.cursor = "progress";
+  btn.textContent = "Downloading…";
 
-    btn.style.cursor = "progress";
-    btn.innerText = "Downloading...";
+  try {
+    prefetchResume();
+    const { blob, filename } = await prefetchResumePromise;
 
-    try {
-        const response = await fetch(API_BASE + "/api/resume/download");
+    const url = URL.createObjectURL(blob);
+    Object.assign(document.createElement("a"), { href: url, download: filename }).click();
+    URL.revokeObjectURL(url);
 
-        if (!response.ok) throw new Error("Failed to download resume");
-
-        const contentDisposition = response.headers.get("Content-Disposition");
-        const filename = contentDisposition?.includes("filename")
-            ? contentDisposition.split("filename=")[1].replace(/"/g, "")
-            : "Shardul_Lote_Resume.pdf";
-
-        const blobUrl = window.URL.createObjectURL(await response.blob());
-        const a = document.createElement("a");
-        a.href = blobUrl;
-        a.download = filename;
-        a.click();
-        window.URL.revokeObjectURL(blobUrl);
-
-    } catch (error) {
-        console.error("Resume download failed:", error);
-        alert("Failed to download resume. Please try again.");
-    } finally {
-        btn.style.cursor = "pointer";
-        btn.innerText = "Download Resume";
-    }
+    prefetchResumePromise = null;
+  } catch {
+    showToast("Couldn't reach the server. Please try again.", true);
+    prefetchResumePromise = null;
+  } finally {
+    btn.style.cursor = "pointer";
+    btn.textContent = "Download Resume";
+  }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("download-btn");
+  btn.addEventListener("mouseenter", prefetchResume);
+  btn.addEventListener("focus", prefetchResume);
+  btn.addEventListener("click", downloadResume);
+});
 
 /* ------------------------------
    PAGE LOAD EVENTS
@@ -1426,7 +1468,7 @@ window.onload=typing;
 <h2>Let's Work Together</h2>
 <p>open to relocation for the right opportunity</p>
 <br>
-<a id="download-btn" class="btn primary" onclick="downloadResume()">
+<a id="download-btn" class="btn primary">
 Download Resume
 </a>
 </div>
@@ -1446,6 +1488,9 @@ Download Resume
 </div>
 
 </section>
+
+<!-- Toast container (add once to your page) -->
+<div id="toast"></div>
 
 <div class="footer">
 Made with ❤️ by Shardul Lote
