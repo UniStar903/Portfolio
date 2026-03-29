@@ -1,7 +1,4 @@
 # Shardul Lote Portfolio
-
-A personal portfolio website Shardul Lote showcasing full-stack Java, Spring Boot, MongoDB, AI, and project highlights.
-
 ## 🚀 About
 This is a single-page portfolio web app built with HTML, CSS, and JavaScript. It includes:
 - Hero intro with animated typing text
@@ -25,9 +22,6 @@ This is a single-page portfolio web app built with HTML, CSS, and JavaScript. It
 3. Ensure backend APIs are running and reachable at:
    - `https://portfolio-backend-5tl4.onrender.com`
    - `https://portfolio-backend-ai-service.onrender.com`
-
-## ✨ Short GitHub Description (Use this on your repo):
-"Full Stack Java Developer portfolio with Spring Boot, MongoDB, and AI-powered features."
 
 ## 📬 Contact
 - GitHub: https://github.com/UniStar903
