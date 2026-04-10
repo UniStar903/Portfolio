@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+<script>
+const API_BASE = "https://portfolio-backend-5tl4.onrender.com";
+//const API_BASE = "http://localhost:8080";
+const AI_API_BASE = "https://portfolio-backend-ai-service.onrender.com";
+Promise.all([
+            fetch(API_BASE + "/api/status"),
+            fetch(AI_API_BASE + "/api/chatbot/status")
+        ]);
+</script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0">
-<meta name="description" content="Shardul Lote - Developer Portfolio">
-<title>Shardul Lote</title>
 
-<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=general-sans@400,500&display=swap">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link id="dynamic-favicon" rel="icon" >
 <script>
   (function() {
     var screenWidth = window.screen.width;
@@ -23,6 +27,13 @@
     }
   })();
 </script>
+
+<meta name="description" content="Shardul Lote - Developer Portfolio">
+<title>Shardul Lote</title>
+
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=general-sans@400,500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link id="dynamic-favicon" rel="icon" >
 <style>
 :root{
 --bg:#0B0B0B;
@@ -90,9 +101,20 @@ background-color: #0a0a0a;
 display: flex;
 justify-content: center;
 align-items: center;
-
+flex-direction: column;
 z-index: 999999;
 
+}
+
+#loading-percent{
+    height: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    z-index: 1000000;
 }
 
 .fade-out {
@@ -882,6 +904,8 @@ h1{font-size:2.5rem}
 
 section{padding:80px 0}
 
+.loader .line {display: none;}
+
 /* .buttons{flex-direction:column} */
 
 .hero-inner {
@@ -1028,9 +1052,6 @@ function animate() {
 animate();
 
 
-const API_BASE = "https://portfolio-backend-5tl4.onrender.com";
-//const API_BASE = "http://localhost:8080";
-const AI_API_BASE = "https://portfolio-backend-ai-service.onrender.com";
 /* ------------------------------
    BACKEND STATUS + LOADER
 --------------------------------*/
@@ -1041,7 +1062,7 @@ async function checkBackend() {
     if (backendReady) return;
     document.body.classList.add("no-scroll"); 
     const loader = document.getElementById("loading-screen");
-    const timeoutFetch = (url, timeout = 5000) =>
+    const timeoutFetch = (url, timeout = 60000) =>
         Promise.race([
             fetch(url),
             new Promise((_, reject) =>
@@ -1061,7 +1082,7 @@ async function checkBackend() {
         ]);
         if (backend.healthy) {
             loadProjects();
-
+            loadingDone = true;
             backendReady = true;
 
             loader.classList.add("fade-out");
@@ -1080,7 +1101,7 @@ async function checkBackend() {
 
     } catch (e) {
         console.log("Backend waking up...", e.message);
-        setTimeout(checkBackend, 5000);
+        setTimeout(checkBackend, 60000);
     }
 }
 
@@ -1290,8 +1311,48 @@ document.addEventListener("DOMContentLoaded", () => {
    PAGE LOAD EVENTS
 --------------------------------*/
 
-document.addEventListener("DOMContentLoaded", function(){
+let percent = 0;
+let loadingDone = false;
+let animFrame = null;
 
+function startLoadingAnimation() {
+  const text = document.getElementById("percent-text");
+  let last = performance.now();
+
+  function speed(p) {
+    if (p < 30)  return 35;
+    if (p < 60)  return 6;
+    if (p < 80)  return 3;
+    if (p < 98)  return 1;
+    return 0;
+  }
+
+  function tick(now) {
+    const dt = (now - last) / 1000;
+    last = now;
+
+    if (loadingDone) {
+      percent += 80 * dt;
+    } else {
+      percent += speed(percent) * dt;
+    }
+
+    if (percent >= 100) {
+      percent = 100;
+      text.innerText = "100%";
+      return;  // stop loop
+    }
+
+    text.innerText = Math.floor(percent) + "%";
+    animFrame = requestAnimationFrame(tick);
+  }
+
+  animFrame = requestAnimationFrame(tick);
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+    
+    startLoadingAnimation();
     checkBackend();
 
     const chatInput = document.getElementById("chat-input");
@@ -1327,6 +1388,10 @@ window.onload=typing;
     <div class="text"><span>Loading</span></div>
     <div class="text"><span>Loading</span></div>
     <div class="line"></div>
+  </div>
+
+  <div id="loading-percent">
+    <span id="percent-text">0%</span>
   </div>
 
 </div>
